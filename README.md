@@ -22,9 +22,6 @@ scala.js compiles scala under src/main/scala/orbits into
 * optimized: target/scala-2.11/orbits-fastopt.js
 * non-optmized: target/scala-2.11/orbits-opt.js
 
-when index.html is served, it reads some static css and images from web/*
-then it loads target/scala-2.11/orbits-opt.js and runs the application.
-
 #### build steps:
 ```
 node offline/build_web_data.js
