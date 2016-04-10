@@ -3,6 +3,5 @@ target/
 .classpath
 .project
 .settings/
-offline
 *.json
 web/generated
