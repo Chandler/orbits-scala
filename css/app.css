@@ -1,0 +1,99 @@
+body { margin: 0; overflow: hidden; background-color: #000; }
+
+.controls {
+
+}
+
+.circle {
+    margin: 3px;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+}
+
+#flock-c-legend {
+    background-color: #B54BC1 /*#EC4513*/
+}
+
+#flock-e-legend {
+    background-color: #96D811
+}
+
+#iss-legend {
+    background-color: #FF0000;
+}
+
+#hubble-legend {
+    background-color: #0089FF;
+}
+
+
+#spire-legend {
+    background-color: #13E2EC;
+}
+
+.label-text {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 6px;
+}
+.time {
+    margin-bottom: 10px;
+    color: #444348;
+}
+
+#tag-selector-wrapper {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#tag-selector {
+    width: 100%;
+}
+
+#more_options {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+@media screen and (max-width: 600px) {
+    .animation_options_box {
+        width: 100%;
+        height: auto;
+        background-color: #fff;
+        padding: 20px;
+        position:absolute;
+    }
+    .hidden_on_mobile {
+        visibility: hidden;
+        display: none
+    }
+}
+
+@media screen and (min-width: 600px) {
+    .animation_options_box {
+        width: 275px;
+        height: auto;
+        background-color: #fff;
+        padding: 20px;
+        position:absolute;
+    }
+    .hidden_on_desktop {
+        visibility: hidden;
+        display: none
+    }
+}
+
+.custom_selector {
+    background-color: #815FB7;
+    color: #fff;
+}
+
+.nicescroll-rails > div:hover {
+    background: rgb(53, 174, 255) !important;
+}
+
+#orbit_paths {
+    margin-top: 20px;
+}
