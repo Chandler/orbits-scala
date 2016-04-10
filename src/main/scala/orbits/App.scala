@@ -21,11 +21,7 @@ import upickle.default._
  * The json satellite data returned from the server is deserialized into these typed objects
  */
 case class SatDescription(sat_id: Int, name: String, line1: String, line2: String)
-case class ServerResponse(
-  tles: Seq[SatDescription],
-  tags: Map[String, Seq[Int]],
-  constellationUrls: Map[String, String]
-)
+case class ServerResponse(tles: Seq[SatDescription], tags: Map[String, Seq[Int]])
 
 case class Point3D(x: Double, y: Double, z: Double)
 

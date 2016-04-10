@@ -15,7 +15,6 @@ Projection calculations are from the amazing: https://github.com/shashwatak/sate
 scala.js pulls 3rd party javascript from two sources:
 * js checked into this rep: src/main/resources/*
 * js downloaded from remote repositories: built.sbt
-these are compiled into target/scala-2.11/orbits-jsdeps
 
 scala.js compiles scala under src/main/scala/orbits into
 * optimized: target/scala-2.11/orbits-fastopt.js
@@ -23,3 +22,13 @@ scala.js compiles scala under src/main/scala/orbits into
 
 when index.html is served, it reads some static css and images from web/*
 then it loads target/scala-2.11/orbits-opt.js and runs the application.
+
+#### build steps:
+```
+node offline/build_web_data.js
+sbt fastOptJS
+cp target/scala-2.11/orbits-jsdeps.js web/generated/orbits-jsdeps.js 
+cp target/scala-2.11/orbits-fastopt.js web/generated/orbits.js
+cd web
+python -m SimpleHTTPServer 8000
+```

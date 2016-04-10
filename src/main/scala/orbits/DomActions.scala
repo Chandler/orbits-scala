@@ -104,20 +104,6 @@ object DomActions {
     //       .niceScroll(js.Dynamic.literal(cursorborder = "none"))
     // )
 
-    // This is pretty gross, but sometimes doing the pure JS
-    // dance is better than building a typed facade for something
-    // that is pretty isolated
-    // for the record here is the javascript
-    //    ```
-    //    $("#tag-selector").on("select2:select select2:unselect", function (e) {
-    //        selected = $(this).val()
-    //        if (selected != null) {
-    //            config.selectedTags = selected
-    //        } else {
-    //            config.selectedTags = []
-    //        }
-    //    })
-    //    ```
     g.jQuery("#tag-selector").on(
       "select2:select select2:unselect",
       (
