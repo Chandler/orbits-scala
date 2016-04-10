@@ -4,6 +4,9 @@ import org.denigma.threejs._
 import scala.scalajs.js
 import js.JSConverters._
 
+/*
+ * Represents a single satellite in the animation as well as the 3D line that represents its orbit
+ */
 case class Satellite(
   var orbit: Line,
   var body: Mesh,
@@ -39,7 +42,7 @@ case class Satellite(
         (1 to numPoints).map { _ =>
           val date = new js.Date(previousDate.getTime() + -resolution*60000)
           previousDate = date
-          val point = Coordinates.tleToEcf(tleLine1, tleLine2, date)
+          val point = Coordinates.tleToEcef(tleLine1, tleLine2, date)
           new Vector3(
             point.x/scale,
             point.y/scale,
@@ -56,7 +59,7 @@ case class Satellite(
   }
 
   def positionBodyAtDate(date: js.Date) {
-    val point = Coordinates.tleToEcf(tleLine1, tleLine2, date)
+    val point = Coordinates.tleToEcef(tleLine1, tleLine2, date)
     body.position.x = point.x/scale
     body.position.y = point.y/scale
     body.position.z = point.z/scale  

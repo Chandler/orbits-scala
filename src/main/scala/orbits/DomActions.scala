@@ -8,15 +8,17 @@ import org.scalajs.jquery._
 import org.scalajs.dom
 import org.denigma.threejs._
 
+/**
+ * helper methods for setting up click handlers and performing 
+ * other dom modifications
+ */
 object DomActions {
-
   def updateLegend(
     constellations: Seq[String],
     colorMap: Map[String, Color]
   ) {
     jQuery("#legend").text("")
     constellations.foreach { name =>
-
       val color = "#" + colorMap(name).getHexString()
       val snippet = 
         s"""
@@ -25,7 +27,6 @@ object DomActions {
              <div class="label-text"> ${name} </div>
            </div>
         """
-
       jQuery("#legend").append(snippet)      
     }
   }

@@ -17,10 +17,28 @@ import scala.util.{Try, Success, Failure}
 import scalajs.js.annotation.{JSExport, JSName}
 import upickle.default._
 
+/** 
+ * The json satellite data returned from the server is deserialized into these typed objects
+ */
 case class SatDescription(sat_id: Int, name: String, line1: String, line2: String)
-case class ServerResponse(tles: Seq[SatDescription], tags: Map[String, Seq[Int]])
+case class ServerResponse(
+  tles: Seq[SatDescription],
+  tags: Map[String, Seq[Int]],
+  constellationUrls: Map[String, String]
+)
+
 case class Point3D(x: Double, y: Double, z: Double)
 
+/**
+ * Several of the values in this config are globally mutated by this application
+ * As far as I can tell, this is just how 3D animation programming works.
+ *
+ * write: The `onClick` handlers respond to user input and update the config.
+ * read: The main animation loop reads the config for each frame and applies the user
+ * input.
+ *
+ * All of the shared state in this app is one instance of this config object
+ */
 class Config(
   val tles: Seq[SatDescription],
   val tags: Map[String, Seq[Int]]
@@ -41,7 +59,7 @@ class Config(
 
   val originalDate              = new js.Date()
 
-  // mutable members
+  // mutable
   var speedupMultiplier         = 1000
   var selectedTags              = Seq("Cubesats")
   var orbitDisplay              = "one_orbit"
@@ -53,11 +71,16 @@ class Config(
 
 @JSExport
 object App extends {
+  /**
+   *  1) attach the generated HTML to the page
+   *  2) fetch data from the server
+   *  3) kick off the animation
+   */
   @JSExport
   def main(target: html.Div): Unit = {
     target.innerHTML = OrbitsHtml()
 
-    Ajax.get("tles_and_tags.json").onSuccess { case xhr =>
+    Ajax.get("generated/tles_and_tags.json").onSuccess { case xhr =>
       val response = read[ServerResponse](xhr.responseText)
 
       // this is mutable, the onclick handlers updates the values and the render()
@@ -68,6 +91,9 @@ object App extends {
     }
   }
 
+  /**
+   *  Setup the initial WebGL scene and dom click handlers.
+   */
   def initializeAnimation(config: Config) = {
     val webglEl: HTMLElement = dom.document.getElementById("scene").asInstanceOf[HTMLElement]
     val width    = dom.window.innerWidth.asInstanceOf[Double]
@@ -137,6 +163,9 @@ object App extends {
     )
   }
 
+  /**
+   *  The main animation loop that is called for every frame.
+   */
   def render(
     scene: Scene,
     satellites: Satellites,
@@ -157,11 +186,14 @@ object App extends {
     val displayOptions = SatDisplayOptions(config.selectedTags, config.orbitDisplay)
 
     val selectedConstellations = satellites.selectedConstellations(displayOptions)
+
     val constellationsColors = ColorMap.forConstellations(selectedConstellations)
 
+    // BUG 1: for some reason I can't modify existing orbit objects so I have to remove
+    // them completely on each frame and add new ones
     satellites.all.foreach(sat => scene.remove(sat.orbit))
     satellites.positionAtDate(config.currentDate, displayOptions, constellationsColors)
-    satellites.all.foreach(sat => scene.add(sat.orbit))
+    satellites.all.foreach(sat => scene.add(sat.orbit)) // BUG 1
 
     satellites.recolor(displayOptions, constellationsColors)
     

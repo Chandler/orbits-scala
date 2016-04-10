@@ -3,6 +3,10 @@ package orbits
 import org.denigma.threejs._
 import scala.scalajs.js
 
+/** 
+ * tells us what satellites are currently in the animation
+ * and how the orbit should be displayed
+ */
 case class SatDisplayOptions(
   val selectedTags: Seq[String],
   val orbitDisplay: String
@@ -14,7 +18,11 @@ case class Satellites(
 ) {
   
   def all = satellites
-
+ 
+  /** 
+   * apply a new color to all satellites that are currently
+   * in the animation
+   */
   def recolor(
     options: SatDisplayOptions,
     colorMap: Map[String, Color]
@@ -26,6 +34,9 @@ case class Satellites(
     }
   }
 
+  /** 
+   * return all satellites that are tagged with a selected tag
+   */
   def selected(options: SatDisplayOptions) =
     all.filter { sat =>
       options.selectedTags.flatMap(tagToIds).contains(sat.satId)
@@ -37,10 +48,13 @@ case class Satellites(
       .toSet
       .toSeq
 
+  /** 
+   * update the body and orbit positions based on a date.
+   */
   def positionAtDate(
     date: js.Date,
     options: SatDisplayOptions,
-    colorMap: Map[String, Color]
+    colorMap: Map[String, Color] // BUG 1, color info only needed here because I am rebuilding the orbit object
   ) {
     all.foreach(_.hide)
     

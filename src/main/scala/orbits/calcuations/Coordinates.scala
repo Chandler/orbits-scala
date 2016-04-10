@@ -1,10 +1,25 @@
 package orbits
 
 import scala.scalajs.js
-import js.Dynamic.{ global => g }
+import scala.scalajs.js.Dynamic.{ global => g }
 
+/*
+ * TLE: Two Line Element Set - a standard format for representing the position and velocity of a satellite
+ * at a given point in time. Using ~physics~ this timestamp can be used to predict a satellites
+ * future or past positions. https://en.wikipedia.org/wiki/Two-line_element_set
+ * 
+ * ECEF: Earth Centered Earth Fixed - is a 3D cartesian coordinate system where (0,0,0)
+ * is the center of an earth that does not move. In our simulation, the earth never moves, the sun
+ * and satellites move around it. So we need ECEF. https://en.wikipedia.org/wiki/ECEF
+ * If the earth rotated around it's own axis or the sun we might use ECI https://en.wikipedia.org/wiki/Earth-centered_inertial
+ *
+ * This library uses javascript directly via js.Dynamic.global because there is no typed facade for satellites.js
+ * What this means is calls like `g.satellite.eciToEcf` are not type safe and will explode at runtime if
+ * satellite.eciToEcf don't exist.
+ */
 object Coordinates {
-  def tleToEcf(
+  /** calculate a satellite's position for a given time */
+  def tleToEcef(
     line1: String,
     line2: String,
     date: js.Date
@@ -22,18 +37,14 @@ object Coordinates {
         
     // https://en.wikipedia.org/wiki/Earth-centered_inertial
     var positionEci = positionAndVelocity.position
-
-    // https://en.wikipedia.org/wiki/ECEF
-    // ecef is the fixed earth coordinate system which is what we want
-    // in this example since our earth doesn't rotate.
-    // if earth was rotating instead of the sun we would need the ECI
-    // coordinates I think
-    var positionEcf = g.satellite.eciToEcf(positionEci, gmst)
+    
+    //https://en.wikipedia.org/wiki/ECEF
+    var positionEcef = g.satellite.eciToEcf(positionEci, gmst)
 
     return Point3D(
-      positionEcf.x.asInstanceOf[Double],
-      positionEcf.y.asInstanceOf[Double],
-      positionEcf.z.asInstanceOf[Double]
+      positionEcef.x.asInstanceOf[Double],
+      positionEcef.y.asInstanceOf[Double],
+      positionEcef.z.asInstanceOf[Double]
     )
   }
 

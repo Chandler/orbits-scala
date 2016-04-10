@@ -35,8 +35,8 @@ trait Select2Options extends js.Object {
 @js.native
 @JSName("JQuery")
 class Select2JQuery extends js.Object {
-  def select2(options: Select2Options): JQuery = js.native;
-  def select2(): JQuery = js.native;
-  def `val`(items: Seq[String]): JQuery = js.native;
+  def select2(options: Select2Options): JQuery = js.native
+  def select2(): JQuery = js.native
+  def `val`(items: Seq[String]): JQuery = js.native
 }
 

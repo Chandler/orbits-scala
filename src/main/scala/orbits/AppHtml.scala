@@ -2,12 +2,16 @@ package orbits
 
 import scalatags.Text.all._
 
+/**
+ * Generates the primary HTML for this application in a #type #safe way. A small amount of initial
+ * structural HTML is fixed in index.html.
+ */
 object OrbitsHtml {
   def apply() =
     html(
       div(`class`:="animation_options_box") (
         div(`class`:="time")(
-          raw("&zwnj;") //invisible char for space holder until real time is added on the client.
+          raw("&zwnj") //invisible char for space holder until real time is added on the client.
         ),
 
         div(`class`:="controls")(

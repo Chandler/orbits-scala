@@ -2,6 +2,10 @@ package orbits
 
 import org.denigma.threejs._
 
+/*
+ * satellites, their orbits and their legend entries are colored per constellation
+ * not per satellite, though some constellations only have 1 satellite.
+ */ 
 object ColorMap {
   def forConstellations(
     constellations: Seq[String]
@@ -13,6 +17,10 @@ object ColorMap {
   }
 }
 
+/*
+ * stateful color wheel that gives you the next color in order until it runs
+ * out of colors then it loops back around.
+ */ 
 class ColorRotation() {
   var purple        = new Color(0xB54BC1)
   var cyan          = new Color(0x13E2EC)
