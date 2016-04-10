@@ -5,3 +5,4 @@ target/
 .settings/
 *.json
 web/generated
+.DS_Store
